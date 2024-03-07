@@ -21,7 +21,7 @@ const startApp = async () => {
     app.use(express.json());
     app.use(
       cors({
-        origin: "https://zoneclocker.netlify.app/",
+        origin: "https://zoneclocker.netlify.app",
         credentials: true,
       })
     );
