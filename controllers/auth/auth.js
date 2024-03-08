@@ -18,6 +18,11 @@ export const registerAdminAndCompany = async (req, res) => {
 
     const { company_email, company_name, name, email, password } = req.body;
 
+    // Check if any required field is empty
+    if (!company_email || !company_name || !name || !email || !password) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
     // Create a new company
     const id_company = await createCompany(connection, company_email, company_name);
 
