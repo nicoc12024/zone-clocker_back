@@ -41,6 +41,7 @@ export const addEmployee = async (req, res) => {
     }
 
     console.log("idNumberExists", idNumberExistsQuery[0][0]);
+    console.log("idNumberExists", idNumberExistsQuery);
     // idNumberExists[{ id_exists: 1 }];
 
     // await connection.query(
