@@ -34,9 +34,9 @@ export const addEmployee = async (req, res) => {
       [id_number]
     );
 
-    const idExists = idNumberExistsQuery[0].id_exists;
+    const idExists = idNumberExistsQuery[0][0].id_exists;
 
-    if (idExists) {
+    if (idExists > 0) {
       return res.status(400).json({ error: "ID number already exists" });
     }
 
