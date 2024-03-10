@@ -19,13 +19,15 @@ export const addEmployee = async (req, res) => {
     const { id_company } = adminInfo;
 
     // Check if email already exists
-    const emailExists = await connection.query(
-      "SELECT COUNT(*) FROM employee WHERE email = ?",
+    const emailExistsQuery = await connection.query(
+      "SELECT EXISTS(SELECT 1 FROM employee WHERE email = ?) AS email_exists",
       [email]
     );
 
-    if (emailExists[0]["COUNT(*)"] > 0) {
-      return res.status(400).json({ error: "Email already exists" });
+    const emailExists = emailExistsQuery[0][0].email_exists;
+
+    if (emailExists > 0) {
+      return res.status(400).json({ error: "Email already in use" });
     }
 
     // Check if ID number already exists
@@ -37,7 +39,7 @@ export const addEmployee = async (req, res) => {
     const idExists = idNumberExistsQuery[0][0].id_exists;
 
     if (idExists > 0) {
-      return res.status(400).json({ error: "ID number already exists" });
+      return res.status(400).json({ error: "ID number already in use" });
     }
 
     console.log("idNumberExists A", idNumberExistsQuery[0][0].id_exists);
