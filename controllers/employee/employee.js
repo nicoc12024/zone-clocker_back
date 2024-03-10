@@ -40,7 +40,8 @@ export const addEmployee = async (req, res) => {
       return res.status(400).json({ error: "ID number already exists" });
     }
 
-    console.log("idNumberExists", idNumberExistsQuery[0]);
+    console.log("idNumberExists", idNumberExistsQuery[0][0]);
+    // idNumberExists[{ id_exists: 1 }];
 
     // await connection.query(
     //   "INSERT INTO employee (id_number, id_zone, name, birthday, email, zone, is_active, mobile_number, id_company) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
