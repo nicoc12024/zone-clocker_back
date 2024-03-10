@@ -29,22 +29,19 @@ export const addEmployee = async (req, res) => {
     }
 
     // Check if ID number already exists
-    const idNumberExists = await connection.query(
-      "SELECT COUNT(*) AS count FROM employee WHERE id_number = ?",
+    const idNumberExistsQuery = await connection.query(
+      "SELECT EXISTS(SELECT 1 FROM employee WHERE id_number = ?) AS id_exists",
       [id_number]
     );
 
-    if (idNumberExists[0].count > 0) {
+    const idExists = idNumberExistsQuery[0].id_exists;
+
+    if (idExists) {
       return res.status(400).json({ error: "ID number already exists" });
     }
 
-    if (idNumberExists.length > 0 && idNumberExists[0].count > 0) {
-      return res.status(400).json({ error: "ID number already exists" });
-    }
-
-    console.log("idNumberExists", idNumberExists[0].count); // This line will only execute if idNumberExists is not undefined
-
-    console.log("idNumberExists", idNumberExists[0].count);
+    console.log("idNumberExists", idExists);
+    console.log("idNumberExists", idNumberExistsQuery[0]);
     console.log("emailExists", emailExists[0]["COUNT(*)"]);
     console.log("inside");
 
