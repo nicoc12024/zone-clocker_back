@@ -30,15 +30,15 @@ export const addEmployee = async (req, res) => {
 
     // Check if ID number already exists
     const idNumberExists = await connection.query(
-      "SELECT COUNT(*) FROM employee WHERE id_number = ?",
+      "SELECT COUNT(*) AS count FROM employee WHERE id_number = ?",
       [id_number]
     );
 
-    if (idNumberExists[0]["COUNT(*)"] > 0) {
+    if (idNumberExists[0].count > 0) {
       return res.status(400).json({ error: "ID number already exists" });
     }
 
-    console.log("idNumberExists", idNumberExists[0]["COUNT(*)"]);
+    console.log("idNumberExists", idNumberExists[0][count]);
     console.log("emailExists", emailExists[0]["COUNT(*)"]);
     console.log("inside");
 
