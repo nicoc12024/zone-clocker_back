@@ -18,8 +18,28 @@ export const addEmployee = async (req, res) => {
     // This info is from the admin that is logged in that comes from the token
     const { id_company } = adminInfo;
 
+    // Check if email already exists
+    const emailExists = await connection.query(
+      "SELECT COUNT(*) FROM employee WHERE email = ?",
+      [email]
+    );
+
+    if (emailExists[0]["COUNT(*)"] > 0) {
+      return res.status(400).json({ error: "Email already exists" });
+    }
+
+    // Check if ID number already exists
+    const idNumberExists = await connection.query(
+      "SELECT COUNT(*) FROM employee WHERE id_number = ?",
+      [id_number]
+    );
+
+    if (idNumberExists[0]["COUNT(*)"] > 0) {
+      return res.status(400).json({ error: "ID number already exists" });
+    }
+
     await connection.query(
-      "INSERT INTO employee ( id_number,  id_zone, name, birthday, email, zone, is_active, mobile_number, id_company) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO employee (id_number, id_zone, name, birthday, email, zone, is_active, mobile_number, id_company) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
         id_number,
         id_zone,
